@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  run-on-linux-server:
+  Deploy-YoutubeLive:
     runs-on: [self-hosted, linux]
 
     steps:
