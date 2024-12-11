@@ -24,7 +24,7 @@ jobs:
             echo "Repository exists. Pulling latest changes..."
             cd "${{vars.REPO_DIRECTORY}}" 
             git reset --hard HEAD
-            git pull
+            git pull origin master
           fi
 
       - name: Create .env File
