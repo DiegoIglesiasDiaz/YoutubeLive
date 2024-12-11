@@ -3,7 +3,7 @@ name: Setup
 on:
   push:
     branches:
-      - master
+      - master  # Trigger the workflow on push to master branch
 
   workflow_dispatch:  # Allows manual triggering of the workflow
 
@@ -15,17 +15,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install ffmpeg
+      - name: Clone or Pull Repository
         run: |
-          sudo apt update
-          sudo apt install -y ffmpeg
-
-      - name: Verify ffmpeg Installation
-        run: ffmpeg -version
         
-      - name: Change Directory to /var/app
-        run: cd /var/app
+          if [ ! -d "${{vars.REPO_DIRECTORY}}" ]; then
+            echo "Repository not found. Cloning..."
+            git clone git@github.com:${{ github.repository }}.git "${{vars.REPO_DIRECTORY}}"
+          else
+            echo "Repository exists. Pulling latest changes..."
+            cd "${{vars.REPO_DIRECTORY}}" && git pull
+          fi
+          
+      - name: Set Environment Variables for DIRNAME and YOUTUBE_KEY
+        run: |
+          echo "VIDEO_DIRECTORY=${{vars.REPO_DIRECTORY}}" >> $GITHUB_ENV
+          echo "YOUTUBE_KEY=${{ secrets.YOUTUBE_KEY }}" >> $GITHUB_ENV
+      - name: Run Python Script in the Background
+        run: |
+          nohup python3 $REPO_DIR/YouTube.py > /var/log/YouTube.log 2>&1 &
 
-      - name: Clone Repository
-        run: git clone git@github.com:${{ github.repository }}.git
-        
+      - name: Check Running Background Jobs
+        run: |
+          ps aux | grep python
