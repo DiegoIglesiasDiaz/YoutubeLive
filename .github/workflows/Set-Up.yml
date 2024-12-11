@@ -1,0 +1,21 @@
+name: Set-Up
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-bash-command:
+    runs-on: self-hosted  
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run a Bash Command
+        run: |
+          echo "Running a bash command on a self-hosted runner"
+          uname -a
+          echo "Current directory:"
+          pwd
