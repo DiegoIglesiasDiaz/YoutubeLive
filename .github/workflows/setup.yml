@@ -22,7 +22,9 @@ jobs:
             git clone git@github.com:${{ github.repository }}.git "${{vars.REPO_DIRECTORY}}"
           else
             echo "Repository exists. Pulling latest changes..."
-            cd "${{vars.REPO_DIRECTORY}}" && git pull
+            cd "${{vars.REPO_DIRECTORY}}" 
+            git reset --hard HEAD
+            git pull
           fi
 
       - name: Create .env File
