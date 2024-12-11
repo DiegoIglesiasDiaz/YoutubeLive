@@ -3,7 +3,7 @@ name: Set-Up
 on:
   push:
     branches:
-      - main
+      - master
 
   workflow_dispatch:  # Allows manual triggering of the workflow
 
@@ -15,9 +15,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run a Bash Command
+      - name: Install ffmpeg
         run: |
-          echo "Running a bash command on a self-hosted runner"
-          uname -a
-          echo "Current directory:"
-          pwd
+          sudo apt update > /dev/null 2>&1
+          sudo apt install -y ffmpeg > /dev/null 2>&1
+
+      - name: Verify ffmpeg Installation
+        run: ffmpeg -version
+        
+      - name: Change Directory to /var/app
+        run: cd /var/app
+
+      - name: Clone Repository
+        run: git clone https://github.com/${{ github.repository }}.git
+        
