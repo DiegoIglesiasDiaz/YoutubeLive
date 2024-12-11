@@ -17,8 +17,8 @@ jobs:
 
       - name: Install ffmpeg
         run: |
-          sudo apt update > /dev/null 2>&1
-          sudo apt install -y ffmpeg > /dev/null 2>&1
+          sudo apt update
+          sudo apt install -y ffmpeg
 
       - name: Verify ffmpeg Installation
         run: ffmpeg -version
