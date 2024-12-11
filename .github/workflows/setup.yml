@@ -1,4 +1,4 @@
-name: Set-Up
+name: Setup
 
 on:
   push:
