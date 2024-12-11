@@ -8,8 +8,8 @@ on:
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  run-bash-command:
-    runs-on: self-hosted  
+  run-on-linux-server:
+    runs-on: [self-hosted, linux]
 
     steps:
       - name: Checkout Repository
