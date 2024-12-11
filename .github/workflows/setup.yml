@@ -29,8 +29,9 @@ jobs:
 
       - name: Create .env File
         run: |
+            rm ${{ vars.REPO_DIRECTORY }}/.env
             echo "YOUTUBE_KEY=${{ secrets.YOUTUBE_KEY }}" >> ${{ vars.REPO_DIRECTORY }}/.env
-            echo "VIDEO_DIRECTORY=${{ vars.VIDEO_DIRECTORY }}" >> ${{ vars.REPO_DIRECTORY }}/.env
+            echo "VIDEO_DIRECTORY=${{ vars.REPO_DIRECTORY }}/Videos" >> ${{ vars.REPO_DIRECTORY }}/.env
 
       - name: Make YouTube.py Executable
         run: chmod +x ${{vars.REPO_DIRECTORY}}/Youtube.py
