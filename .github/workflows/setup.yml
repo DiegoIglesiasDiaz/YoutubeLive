@@ -17,7 +17,6 @@ jobs:
 
       - name: Clone or Pull Repository
         run: |
-        
           if [ ! -d "${{vars.REPO_DIRECTORY}}" ]; then
             echo "Repository not found. Cloning..."
             git clone git@github.com:${{ github.repository }}.git "${{vars.REPO_DIRECTORY}}"
@@ -25,19 +24,44 @@ jobs:
             echo "Repository exists. Pulling latest changes..."
             cd "${{vars.REPO_DIRECTORY}}" && git pull
           fi
-          
-      - name: Set Environment Variables for DIRNAME and YOUTUBE_KEY
+
+      - name: Create .env File
         run: |
-          echo "VIDEO_DIRECTORY=${{vars.REPO_DIRECTORY}}" >> $GITHUB_ENV
-          echo "YOUTUBE_KEY=${{ secrets.YOUTUBE_KEY }}" >> $GITHUB_ENV
+            echo "YOUTUBE_KEY=${{ secrets.YOUTUBE_KEY }}" >> ${{ vars.REPO_DIRECTORY }}/.env
+            echo "VIDEO_DIRECTORY=${{ vars.VIDEO_DIRECTORY }}" >> ${{ vars.REPO_DIRECTORY }}/.env
 
       - name: Make YouTube.py Executable
-        run: chmod +x ${{vars.REPO_DIRECTORY}}/Youtube.py    
+        run: chmod +x ${{vars.REPO_DIRECTORY}}/Youtube.py
 
-      - name: Run Python Script in the Background
-        run: |
-          nohup python3 $REPO_DIR/YouTube.py > /var/log/YouTube.log 2>&1 &
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-      - name: Check Running Background Jobs
+      - name: Install dependencies
         run: |
-          ps aux | grep python
+          python -m pip install --upgrade pip
+          if [ -f ${{vars.REPO_DIRECTORY}}/requirements.txt ]; then
+            pip install -r ${{vars.REPO_DIRECTORY}}/requirements.txt
+          else
+            echo "requirements.txt not found, skipping dependency installation."
+          fi
+
+      - name: Check and Install FFmpeg
+        run: |
+          if ! command -v ffmpeg &> /dev/null; then
+            echo "FFmpeg not found. Installing..."
+            sudo apt-get update && sudo apt-get install -y ffmpeg
+          else
+            echo "FFmpeg is already installed."
+          fi
+          
+
+      # Uncomment these steps if you want to run the Python script in the background
+      # - name: Run Python Script in the Background
+      #   run: |
+      #     nohup python3 ${{vars.REPO_DIRECTORY}}/YouTube.py > /var/log/YouTube.log 2>&1 &
+
+      # - name: Check Running Background Jobs
+      #   run: |
+      #     ps aux | grep python

@@ -1,1 +1,21 @@
 /Videos/*
+
+# Virtual environments
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.iml
+
+# Environment variables and secrets
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
