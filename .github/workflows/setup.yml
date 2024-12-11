@@ -27,5 +27,5 @@ jobs:
         run: cd /var/app
 
       - name: Clone Repository
-        run: git clone git@github.com:DiegoIglesiasDiaz/${{ github.repository }}.git
+        run: git clone git@github.com:${{ github.repository }}.git
         
