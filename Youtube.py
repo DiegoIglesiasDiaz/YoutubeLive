@@ -1,8 +1,9 @@
 import os
 
-dirname = "/root/YouTube/video/" 
+dirname = os.getenv("VIDEO_DIRECTORY", "/var/app/")
+youtube_key = os.getenv("YOUTUBE_KEY", "0xx0-xxxx-x000-x0x0-xxxx")
 
-key = 'rtmp://a.rtmp.youtube.com/live2/0xx0-xxxx-x000-x0x0-xxxx' 
+key = 'rtmp://a.rtmp.youtube.com/live2/'+ youtube_key 
 
 while True: 
     files = os.listdir(dirname)  
