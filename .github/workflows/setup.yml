@@ -32,8 +32,8 @@ jobs:
           echo "YOUTUBE_KEY=${{ secrets.YOUTUBE_KEY }}" >> $GITHUB_ENV
 
       - name: Make YouTube.py Executable
-        run: chmod +x ${{vars.REPO_DIRECTORY}}/YouTube.py    
-        
+        run: chmod +x ${{vars.REPO_DIRECTORY}}/Youtube.py    
+
       - name: Run Python Script in the Background
         run: |
           nohup python3 $REPO_DIR/YouTube.py > /var/log/YouTube.log 2>&1 &
